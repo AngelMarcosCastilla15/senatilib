@@ -37,6 +37,11 @@ INSERT INTO subcategorias(idcategoria, subcategoria) VALUES
 (1, 'programación'),
 (1, 'diseño grafico');
 
+INSERT INTO subcategorias(idcategoria, subcategoria) VALUES
+(2, 'Algebra'),
+(2, 'Geometria'),
+(2,'Trigonometria');
+
 CREATE TABLE editoriales(
 	ideditorial 		INT AUTO_INCREMENT PRIMARY KEY,
 	editorial			VARCHAR(150) NOT NULL,
@@ -63,7 +68,7 @@ CREATE TABLE materiales(
 	titulo				VARCHAR(200) NOT NULL,
 	sinopsis				VARCHAR(300) NOT NULL,
 	versionmat			TINYINT	NOT NULL DEFAULT 1,
-	autor					VARCHAR(1000) NOT NULL,
+	autor					VARCHAR(100) NOT NULL,
 	cantidadpaginas	SMALLINT NOT NULL,
 	apublicacion		CHAR(4) NOT NULL,
 	caratula				VARCHAR(100) NULL,
@@ -82,3 +87,52 @@ INSERT INTO materiales(idsubcategoria, ideditorial, titulo, sinopsis, autor, can
 VALUES
 (1,3,'Aprende Exel Facil', 'MS EXCEL 365, Integracion con Power BI', 'Carlos Prada', 3000, '2022', 'ruta'),
 (4,1,'JS como debe ser', 'Aprende js desde cero', 'Moran gozales', 100, '2022', 'ruta');
+
+
+DELIMITER $$
+CREATE PROCEDURE listarMateriales()
+BEGIN
+	SELECT * FROM materiales;
+END $$
+
+
+DELIMITER $$
+CREATE PROCEDURE listarCategorias()
+BEGIN
+	SELECT * FROM categorias;
+END $$
+
+
+DELIMITER $$
+CREATE PROCEDURE listarsubcategoria()
+BEGIN
+	SELECT * FROM subcategorias;
+END $$
+
+
+DELIMITER $$
+CREATE PROCEDURE listarEditoriales()
+BEGIN
+	SELECT * FROM editoriales;
+END $$
+
+DELIMITER $$
+CREATE PROCEDURE spu_registrar_material(
+_subcategoria			INT,
+_editorial				INT,
+_titulo					VARCHAR(200),
+_sinopsis				VARCHAR(300),
+_versionmat				TINYINT,
+_autor					VARCHAR(100),	
+_cantidadpaginas		SMALLINT,
+_apublicacion			CHAR(4),
+_caratula				VARCHAR(100),
+_materialpdf			VARCHAR(100),
+
+)
+BEGIN
+	INSERT INTO materiales(idsubcategoria, ideditorial, titulo, sinopsis, autor, cantidadpaginas,apublicacion, materialpdf)
+	VALUES
+(1,3,'Aprende Exel Facil', 'MS EXCEL 365, Integracion con Power BI', 'Carlos Prada', 3000, '2022', 'ruta'),
+END $$
+
