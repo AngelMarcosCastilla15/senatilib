@@ -1,14 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+  <style>
+    .grid {
+      display: grid;
+      gap: 15px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+
+    .item {
+      width: 100%;
+      box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+    }
+
+    .item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    p {
+      margin: 0;
+    }
+  </style>
 </head>
+
 <body>
-  <a rel="stylesheet" href="view/registrarmateriales.html">
-    registar
-  </a>
+  <div class="container mt-4">
+    <h1 class="mb-5">Listados de Materiales</h1>
+    <a class="btn btn-primary mb-4" href="view/registrarmateriales.html">Registrar</a>
+    <div class="grid" id="grid-materiales">
+      
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const BASE_URL_STORAGE = "./storage/"
+      const $ = selector => document.querySelector(selector);
+      const data = new URLSearchParams();
+      data.append("operacion", "listar");
+      const renderData = () => {
+        fetch("./controllers/material.controller.php", {
+          method: "POST",
+          body: data
+        })
+          .then(res => res.json())
+          .then(data => {
+            data.forEach(element => {
+              const {autor, titulo,caratula, materialpdf, subcategoria, sinopsis} = element
+            $("#grid-materiales").innerHTML+=`
+            <div class="item">
+            <img
+          src="${BASE_URL_STORAGE}${caratula}"
+          alt="">
+        <div class="p-4">
+          <p><b class="me-2">titulo:</b> <span id="titulo">${titulo}</span></p>
+          <p><b class="me-2">sinopsis:</b> <span id="sinopsis">${sinopsis}</span></p>
+          <p><b class="me-2">subcategoria:</b> <span id="subcategoria">${subcategoria}</span></p>
+          <p><b class="me-2">autor:</b> <span id="autor">${autor}</span></p>
+          <a class="btn btn-danger my-2 btn-sm" download="${titulo}" href="${BASE_URL_STORAGE}${materialpdf}">Descargar</a>
+
+        </div>
+            `
+            });
+            
+          })
+      }
+
+      renderData();
+    })
+  </script>
 </body>
+
 </html>

@@ -135,7 +135,7 @@
                     class="form-control"
                     name="caratula"
                     type="file"
-                    accept="image/*"
+                    accept="image/jpg"
                     id="caratula"
                   />
                 </div>
@@ -169,6 +169,9 @@
             <button type="submit" class="btn btn-primary">
               Guardar Material
             </button>
+            <a href="../index.html" class="btn  btn-outline-success ">
+              ver lista
+            </a>
           </div>
         </form>
       </div>
@@ -267,7 +270,21 @@
         $formRegister.addEventListener("submit", (e) => {
           e.preventDefault();
           const formdata = new FormData($formRegister);
-          CanvasConfetti();
+          formdata.append("operacion","registrar");
+          fetch("../controllers/material.controller.php",{
+            method:"POST",
+            body: formdata
+          })
+          .then(res => res.json())
+          .then(data => {
+            if(data.status){
+              $selectsubcategoria.innerHTML = "";
+              $selectsubcategoria.disabled = true;
+              $imPreview.src = "";
+              $formRegister.reset();
+            }
+          })
+ //         CanvasConfetti();
         });
       });
     </script>
